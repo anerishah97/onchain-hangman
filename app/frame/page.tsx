@@ -25,7 +25,7 @@ export async function generateMetadata({ searchParams }: FramePageProps): Promis
   // For now, we use a generic image.
   // Ideally, this image would be dynamically generated with the score and outcome.
   // Example: using Vercel OG Image Generation or a custom API route.
-  const imageUrl = `${NEXT_PUBLIC_URL}/onchain-hangman-frame-generic.png`; 
+  const imageUrl = `${NEXT_PUBLIC_URL}/onchain-hangman.png`; 
   // You'll need to create this image and place it in your /public folder.
   // Or, better, use a dynamic image generation service/API route.
 
