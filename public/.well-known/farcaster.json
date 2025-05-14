@@ -1,0 +1,12 @@
+{
+    "frame": {
+      "version": "1",
+      "name": "Onchain Hangman",
+      "iconUrl": "https://onchain-hangman.vercel.app/logo.png",
+      "homeUrl": "https://onchain-hangman.vercel.app/",
+      "imageUrl": "https://onchain-hangman.vercel.app/onchain-hangman.png",
+      "buttonTitle": "Play",
+      "splashImageUrl": "https://onchain-hangman.vercel.app/onchain-hangman.png",
+      "splashBackgroundColor": "#f5f0ec"
+    }
+  }
