@@ -15,41 +15,53 @@ export async function generateMetadata({ searchParams }: FramePageProps): Promis
   const score = searchParams.score || '0';
   const outcome = searchParams.outcome || 'played';
 
-  let imageText = `I scored ${score} in Onchain Hangman!`;
+  let titleText = `Onchain Hangman Score: ${score}`;
+  let descriptionText = `I scored ${score} in Onchain Hangman! Can you beat my score?`;
+  // For a Mini App Embed, the image might be more generic or a snapshot of the score screen if dynamically generated.
+  // We are still using a generic one for now.
+  const imageUrl = `${NEXT_PUBLIC_URL}/onchain-hangman-frame-generic.png`; 
+
   if (outcome === 'allRoundsWon') {
-    imageText = `Onchain Star! ⭐ Scored ${score}!`;
+    titleText = `Onchain Star! Scored ${score}!`;
+    descriptionText = `I conquered Onchain Hangman with a score of ${score}! ⭐`;
   } else if (outcome === 'roundLost') {
-    imageText = `Almost! Scored ${score} in Onchain Hangman.`;
+    titleText = `So close! Scored ${score} in Onchain Hangman.`;
+    descriptionText = `I tried Onchain Hangman and scored ${score}. Challenge me!`;
   }
 
-  // For now, we use a generic image.
-  // Ideally, this image would be dynamically generated with the score and outcome.
-  // Example: using Vercel OG Image Generation or a custom API route.
-  const imageUrl = `${NEXT_PUBLIC_URL}/onchain-hangman.png`; 
-  // You'll need to create this image and place it in your /public folder.
-  // Or, better, use a dynamic image generation service/API route.
-
-  // A more advanced image URL could be:
-  // const imageUrl = `${NEXT_PUBLIC_URL}/api/frame-image?score=${score}&outcome=${outcome}&text=${encodeURIComponent(imageText)}`;
-
-
-  const postUrl = `${NEXT_PUBLIC_URL}/api/frame-action`; // A simple API route for button actions
+  // Construct the FrameEmbed JSON object as per Mini App sharing guide
+  const frameEmbed = {
+    version: "next",
+    imageUrl: imageUrl,
+    button: {
+      title: "Play Onchain Hangman!", // Call to action
+      action: {
+        type: "launch_frame",
+        name: "Onchain Hangman", // Optional: Your Mini App name
+        url: NEXT_PUBLIC_URL, // URL to launch when the frame is clicked (your app's home)
+        // splashImageUrl: `${NEXT_PUBLIC_URL}/logo.png`, // Optional: from your farcaster.json
+        // splashBackgroundColor: "#f5f0ec" // Optional: from your farcaster.json
+      }
+    }
+  };
 
   return {
-    title: `Onchain Hangman Score: ${score}`,
-    description: imageText,
+    title: titleText,
+    description: descriptionText,
     openGraph: {
-      title: `Onchain Hangman Score: ${score}`,
-      description: imageText,
+      title: titleText,
+      description: descriptionText,
       images: [imageUrl],
     },
     other: {
-      'fc:frame': 'vNext',
-      'fc:frame:image': imageUrl,
-      'fc:frame:button:1': 'Play Onchain Hangman!',
-      'fc:frame:post_url': postUrl,
-      // You could add more buttons here, e.g., for different actions or links.
-      // 'fc:frame:input:text': 'Enter your message...', 
+      // Single fc:frame meta tag with stringified JSON content
+      'fc:frame': JSON.stringify(frameEmbed),
+      // The following are standard Farcaster frame tags, not strictly needed if only using Mini App Embed format,
+      // but can be good for broader compatibility or if this URL is hit by older Frame parsers.
+      // For strict Mini App Embed, only the above fc:frame is primary.
+      // 'fc:frame:image': imageUrl, 
+      // 'fc:frame:button:1': 'Play Onchain Hangman!',
+      // 'fc:frame:post_url': `${NEXT_PUBLIC_URL}/api/frame-action`, // Not used by launch_frame action type
     },
   };
 }
@@ -61,18 +73,14 @@ export default function FramePage({ searchParams }: FramePageProps) {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', textAlign: 'center' }}>
-      <h1>Onchain Hangman Frame</h1>
-      <p>This page is intended to be used as a Farcaster Frame.</p>
-      <p>If you&apos;re seeing this in a browser, it means the Frame metadata is being served.</p>
+      <h1>Onchain Hangman - Shareable Frame</h1>
+      <p>This page generates metadata for a Farcaster Mini App Embed.</p>
+      <p>If you&apos;re seeing this in a browser, the relevant meta tags should be in the page head.</p>
       <hr />
-      <h2>Frame Details:</h2>
+      <h2>Details for Embed:</h2>
       <p>Score: {score}</p>
       <p>Outcome: {outcome}</p>
-      <p>Visit the main game: <a href={NEXT_PUBLIC_URL} style={{color: 'blue'}}>{NEXT_PUBLIC_URL}</a></p>
-      <p>
-        When this page is embedded in a Farcaster client, users will see an image (ideally dynamic)
-        and a button to play the game.
-      </p>
+      <p>Main game: <a href={NEXT_PUBLIC_URL} style={{color: 'blue'}}>{NEXT_PUBLIC_URL}</a></p>
     </div>
   );
 } 
