@@ -17,11 +17,11 @@ const KEYBOARD_LAYOUT = [
 
 const Keyboard: React.FC<KeyboardProps> = ({ guessedLetters, onLetterClick, gameStatus }) => {
   return (
-    // Main container for rows, changed to flex-col
-    <div className="flex flex-col items-center gap-1 sm:gap-2 my-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+    // Main container for rows, gap between rows can remain sm:gap-2
+    <div className="flex flex-col items-center gap-1.5 sm:gap-2 my-4 w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
       {KEYBOARD_LAYOUT.map((row, rowIndex) => (
-        // Container for each row of keys
-        <div key={`row-${rowIndex}`} className="flex justify-center gap-1 sm:gap-1.5 w-full">
+        // Container for each row of keys, increased gap slightly
+        <div key={`row-${rowIndex}`} className="flex justify-center gap-1.5 sm:gap-2 w-full">
           {row.split('').map((letter) => {
             const isGuessed = guessedLetters.includes(letter);
             const isDisabled = isGuessed || gameStatus !== 'playing';
@@ -30,11 +30,11 @@ const Keyboard: React.FC<KeyboardProps> = ({ guessedLetters, onLetterClick, game
                 key={letter}
                 onClick={() => onLetterClick(letter)}
                 disabled={isDisabled}
-                // Removed flex-grow and min-w-0 to ensure fixed size. Sizes are defined by w-X h-X classes.
                 className={`
-                  w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 
+                  w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 
+                  flex-shrink-0 
                   border rounded-md 
-                  font-mono text-xs sm:text-sm md:text-base uppercase
+                  font-mono text-sm sm:text-base md:text-base uppercase
                   flex items-center justify-center
                   transition-colors duration-150 
                   ${

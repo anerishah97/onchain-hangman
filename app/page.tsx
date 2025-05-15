@@ -71,7 +71,7 @@ const IntroPageComponent = ({ onStartChallenge }: { onStartChallenge: () => void
 export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
   const [frameAdded, setFrameAdded] = useState(false);
-  const openUrl = useOpenUrl();
+  const minikitOpenUrl = useOpenUrl();
   const mainContentRef = useRef<HTMLDivElement>(null);
 
   const [gamePhase, setGamePhase] = useState<'intro' | 'playing'>('intro');
@@ -166,7 +166,7 @@ export default function App() {
     }
     const framePageURL = `${appURL}/frame?score=${totalSessionScore}&outcome=${challengeOutcome || 'played'}`;
     const warpcastURL = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}&embeds[]=${encodeURIComponent(framePageURL)}`;
-    window.open(warpcastURL, '_blank');
+    minikitOpenUrl(warpcastURL);
   };
 
   const saveFrameButton = useMemo(() => {
@@ -309,7 +309,7 @@ export default function App() {
             variant="ghost"
             size="sm"
             className="text-[var(--ock-text-foreground-muted)] text-xs"
-            onClick={() => openUrl("https://base.org/builders/minikit")}
+            onClick={() => minikitOpenUrl("https://base.org/builders/minikit")}
           >
             Built on Base with MiniKit
           </UIDemoButton>
