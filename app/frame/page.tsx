@@ -56,6 +56,7 @@ export async function generateMetadata({ searchParams }: FramePageProps): Promis
     other: {
       // Single fc:frame meta tag with stringified JSON content
       'fc:frame': JSON.stringify(frameEmbed),
+      'fc:frame:image': imageUrl,
       // The following are standard Farcaster frame tags, not strictly needed if only using Mini App Embed format,
       // but can be good for broader compatibility or if this URL is hit by older Frame parsers.
       // For strict Mini App Embed, only the above fc:frame is primary.
