@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { chooseWord, getDisplayWord, checkWin } from '../lib/hangman-logic';
+import Keyboard from './Keyboard';
 
 const MAX_INCORRECT_GUESSES = 6;
 const BONUS_POINTS_PER_LIFE = 10;
@@ -156,20 +157,23 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
         setFeedbackMessage(''); // Clear other feedback when hint is shown
     };
 
-    const handleGuess = (letter: string) => {
+    const handleGuess = useCallback((letter: string) => {
         if (wordHintMessage && !wordHintRevealed) setWordHintMessage('');
         // Don't clear feedbackMessage here yet, clear it if guess is valid and new
 
         if (gameStatus !== 'playing') return; // Should ideally not be callable
 
-        if (!letter.match(/[a-z]/i) || letter.length !== 1) {
+        // Normalize letter from keyboard (already lowercase)
+        const lowerLetter = letter.toLowerCase();
+
+        if (!lowerLetter.match(/[a-z]/i) || lowerLetter.length !== 1) {
             setFeedbackMessage("Invalid input. Please enter a single letter.");
             setInputValue('');
             return;
         }
 
-        if (guessedLetters.includes(letter)) {
-            setFeedbackMessage(`You already guessed '${letter}'. Try another letter.`);
+        if (guessedLetters.includes(lowerLetter)) {
+            setFeedbackMessage(`You already guessed '${lowerLetter}'. Try another letter.`);
             setInputValue('');
             return;
         }
@@ -177,11 +181,11 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
         // If we reach here, the guess is valid and new
         setFeedbackMessage(''); // Clear feedback message
 
-        const newGuessedLetters = [...guessedLetters, letter];
+        const newGuessedLetters = [...guessedLetters, lowerLetter];
         setGuessedLetters(newGuessedLetters);
         setInputValue('');
 
-        if (wordToGuess.includes(letter)) {
+        if (wordToGuess.includes(lowerLetter)) {
             if (checkWin(wordToGuess, newGuessedLetters)) {
                 setGameStatus('won'); // useEffect will handle onRoundComplete
             }
@@ -194,7 +198,7 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
                 return newIncorrectGuesses;
             });
         }
-    };
+    }, [gameStatus, guessedLetters, wordToGuess, wordHintMessage, wordHintRevealed]);
     
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value.toLowerCase());
@@ -218,7 +222,7 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
     return (
         // Removed the outer div and the top header section (Round, Difficulty, Total Score)
         // Parent component (app/page.tsx) will now control this layout and display those details.
-        <div className="w-full max-w-md flex flex-col items-center">
+        <div className="w-full max-w-md flex flex-col items-center text-[var(--app-foreground)]">
             {/* Current Round Score can be displayed here if desired, or just shown at end of round by parent */}
             { gameStatus === 'playing' && (
                  <div className="mb-2 text-xl">
@@ -226,56 +230,48 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
                  </div>
             )}
             <div className="mb-4">
-                <pre className="text-lg font-mono">
+                <pre className="text-lg font-mono text-[var(--app-foreground-muted)]">
                     {HANGMAN_STAGES[incorrectGuesses]}
                 </pre>
             </div>
             
-            <div className="mb-1 text-center">
+            <div className="mb-1 text-center mb-2">
                 <p className="text-2xl tracking-widest">{displayWord}</p>
             </div>
 
             {/* Display Word Hint Message */}
             {wordHintMessage && (
-                 <div className={`my-3 text-sm text-center ${wordHintRevealed ? 'text-cyan-400' : 'text-red-400'}`}>
+                 <div className={`my-3 text-sm text-center ${wordHintRevealed ? 'text-blue-300' : 'text-[var(--ock-text-error)]'}`}>
                     <p>{wordHintMessage}</p>
                 </div>
             )}
 
             {/* Display General Feedback Message (already guessed, invalid input) */}
             {feedbackMessage && (
-                <div className="my-2 text-sm text-center text-yellow-400">
+                <div className="my-2 text-sm text-center text-[var(--ock-text-warning)]">
                     <p>{feedbackMessage}</p>
                 </div>
             )}
 
             {gameStatus === 'playing' && (
-                <div className="mb-4 w-full max-w-xs">
-                    <form onSubmit={handleInputSubmit} className="flex justify-center mb-3">
-                        <input
-                            type="text"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                            maxLength={1}
-                            className="p-2 border rounded-md text-black mr-2 w-24 text-center"
-                            placeholder="Letter"
-                            autoFocus
-                        />
-                        <button type="submit" className="px-4 py-2 bg-blue-500 hover:bg-blue-700 rounded-md">
-                            Guess
-                        </button>
-                    </form>
+                <div className="mb-4 w-full max-w-xs flex flex-col items-center">
                     <button 
                         onClick={handleRevealWordHint}
                         disabled={wordHintRevealed || gameStatus !== 'playing'}
                         title={hintButtonTitle}
-                        className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-800 rounded-md disabled:bg-gray-500 disabled:cursor-not-allowed">
+                        className="w-full px-4 py-2 bg-violet-400 hover:bg-violet-500 text-white font-semibold rounded-lg disabled:bg-violet-200 disabled:text-violet-400 disabled:cursor-not-allowed mb-3 mt-1">
                         Reveal Word Hint
                     </button>
+                    
+                    <Keyboard 
+                        guessedLetters={guessedLetters}
+                        onLetterClick={handleGuess} 
+                        gameStatus={gameStatus}
+                    />
                 </div>
             )}
 
-            <div className="mb-2">
+            <div className="mb-2 text-sm text-[var(--app-foreground-muted)]">
                 <p>Incorrect Guesses: {incorrectGuesses} / {MAX_INCORRECT_GUESSES}</p>
             </div>
 
@@ -285,15 +281,15 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
                 <div className="text-center mt-4">
                     {gameStatus === 'won' && (
                         <>
-                            <p className="text-2xl text-green-400 mb-2">Round Won!</p>
+                            <p className="text-2xl text-[var(--ock-text-success)] mb-2">Round Won!</p>
                             <p className="text-xl mb-2">Word: <span className="font-bold uppercase">{wordToGuess}</span></p>
                             <p className="text-xl mb-1">Round Score: +{roundScore}</p>
-                            {!wordHintRevealed && <p className="text-sm text-yellow-400 mb-2">(1.5x bonus applied for not using word hint!)</p>}
+                            {!wordHintRevealed && <p className="text-sm text-[var(--ock-text-warning)] mb-2">(1.5x bonus applied for not using word hint!)</p>}
                         </>
                     )}
                     {gameStatus === 'lost' && (
                         <>
-                            <p className="text-2xl text-red-400 mb-2">Round Lost!</p>
+                            <p className="text-2xl text-[var(--ock-text-error)] mb-2">Round Lost!</p>
                             <p className="text-xl mb-2">Word: <span className="font-bold uppercase">{wordToGuess}</span></p>
                             <p className="text-xl mb-4">Round Score: {roundScore}</p> 
                         </>
@@ -302,10 +298,6 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
                      <p className="text-gray-400 text-sm mt-2">Next round will start shortly...</p> 
                 </div>
             )}
-            
-            <div className="mt-6 text-sm text-gray-400">
-                <p>Guessed letters: {guessedLetters.join(', ')}</p>
-            </div>
         </div>
     );
 };
