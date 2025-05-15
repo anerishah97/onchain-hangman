@@ -19,7 +19,7 @@ export async function generateMetadata({ searchParams }: FramePageProps): Promis
   let descriptionText = `I scored ${score} in Onchain Hangman! Can you beat my score?`;
   // For a Mini App Embed, the image might be more generic or a snapshot of the score screen if dynamically generated.
   // We are still using a generic one for now.
-  const imageUrl = `${NEXT_PUBLIC_URL}/onchain-hangman-frame-generic.png`; 
+  const imageUrl = `${NEXT_PUBLIC_URL}/onchain-hangman.png`; 
 
   if (outcome === 'allRoundsWon') {
     titleText = `Onchain Star! Scored ${score}!`;
