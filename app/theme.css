@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -36,9 +36,9 @@
 }
 
 .mini-app-theme {
-  --ock-font-family: "Geist", sans-serif; /* Can consider a rounder font later */
-  --ock-border-radius: 1rem; /* Increased for cuter, rounder corners */
-  --ock-border-radius-inner: 0.75rem; /* Also increased */
+  --ock-font-family: "Nunito", sans-serif;
+  --ock-border-radius: 1rem;
+  --ock-border-radius-inner: 0.75rem;
 
   /* Text colors */
   --ock-text-inverse: var(--app-background);
