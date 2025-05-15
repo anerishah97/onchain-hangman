@@ -32,8 +32,8 @@ const DIFFICULTY_SEQUENCE: ('easy' | 'medium' | 'hard')[] = [
 // Updated Intro Page Component rules
 const IntroPageComponent = ({ onStartChallenge }: { onStartChallenge: () => void }) => {
   return (
-    <div className="text-center p-4 sm:p-8 max-w-xl mx-auto bg-slate-800 rounded-2xl shadow-2xl">
-      <h1 className="text-3xl sm:text-4xl font-bold text-[var(--app-foreground)] mb-6">Test Your Onchain Chops!</h1>
+    <div className="text-center px-4 pb-4 sm:px-8 sm:pb-8 max-w-xl mx-auto bg-slate-800 rounded-b-2xl sm:rounded-2xl shadow-2xl w-full">
+      <h1 className="text-3xl sm:text-4xl font-bold text-[var(--app-foreground)] mb-6 pt-6 sm:pt-8">Test Your Onchain Chops!</h1>
       <p className="text-md sm:text-lg text-[var(--app-foreground-muted)] mb-8">
         Think you know your way around the blockchain? Prove it with Onchain Hangman!
         Complete all rounds to prove your mettle!
@@ -208,7 +208,7 @@ export default function App() {
   return (
     <div ref={mainContentRef} className="flex flex-col font-sans text-[var(--ock-text-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)]">
       <div className="w-full max-w-screen-md mx-auto px-4 py-3 flex flex-col flex-grow">
-        <header className="flex justify-between items-center mb-3 h-11 flex-shrink-0">
+        <header className="flex justify-between items-center h-11 flex-shrink-0">
           <div className="flex items-center space-x-2">
             <Wallet className="z-10">
                 <ConnectWallet><Name className="text-inherit" /></ConnectWallet>
@@ -237,9 +237,11 @@ export default function App() {
           </div>
         </header>
 
-        <main className="flex-1 flex flex-col items-center justify-center flex-grow">
+        <main className={`flex-1 flex flex-col items-center ${gamePhase === 'intro' ? 'justify-start' : 'justify-center'} flex-grow w-full`}>
           {gamePhase === 'intro' ? (
-            <IntroPageComponent onStartChallenge={startGame} />
+            <div className="w-full">
+                <IntroPageComponent onStartChallenge={startGame} />
+            </div>
           ) : challengeOutcome === 'allRoundsWon' ? (
             // UI for winning the entire challenge
             <div className="text-center p-8 bg-slate-800 rounded-2xl shadow-2xl">

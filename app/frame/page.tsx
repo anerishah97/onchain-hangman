@@ -39,7 +39,7 @@ export async function generateMetadata({ searchParams }: FramePageProps): Promis
         type: "launch_frame",
         name: "Onchain Hangman", // Optional: Your Mini App name
         url: NEXT_PUBLIC_URL, // URL to launch when the frame is clicked (your app's home)
-        splashImageUrl: `${NEXT_PUBLIC_URL}/logo.png`, // Assuming logo.png is in /public and suitable
+        splashImageUrl: `${NEXT_PUBLIC_URL}/onchain-hangman.png`, // Assuming logo.png is in /public and suitable
         splashBackgroundColor: "#4A3F6B" // Matching your cute dark theme background
       }
     }
