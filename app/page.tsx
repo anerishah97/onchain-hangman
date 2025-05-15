@@ -156,6 +156,9 @@ export default function App() {
 
   const handleShareScore = () => {
     const appURL = process.env.NEXT_PUBLIC_URL || window.location.origin;
+    console.log("process.env.NEXT_PUBLIC_URL", process.env.NEXT_PUBLIC_URL);
+    console.log("window.location.origin", window.location.origin);
+    console.log("appURL", appURL);
     let shareText = "";
     if (challengeOutcome === 'allRoundsWon') {
       shareText = `I'm an Onchain Star! ⭐ I scored ${totalSessionScore} in Onchain Hangman!`;
@@ -165,7 +168,9 @@ export default function App() {
       shareText = `Check out Onchain Hangman! I scored ${totalSessionScore}.`; // Fallback
     }
     const framePageURL = `${appURL}/frame?score=${totalSessionScore}&outcome=${challengeOutcome || 'played'}`;
+    console.log("framePageURL", framePageURL);
     const warpcastURL = `https://warpcast.com/~/compose?text=${encodeURIComponent(shareText)}&embeds[]=${encodeURIComponent(framePageURL)}`;
+    console.log("warpcastURL", warpcastURL);
     minikitOpenUrl(warpcastURL);
   };
 
