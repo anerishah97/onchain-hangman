@@ -1,12 +1,17 @@
 {
-    "frame": {
-      "version": "1",
-      "name": "Onchain Hangman",
-      "iconUrl": "https://onchain-hangman.vercel.app/logo.png",
-      "homeUrl": "https://onchain-hangman.vercel.app/",
-      "imageUrl": "https://onchain-hangman.vercel.app/onchain-hangman.png",
-      "buttonTitle": "Play",
-      "splashImageUrl": "https://onchain-hangman.vercel.app/onchain-hangman.png",
-      "splashBackgroundColor": "#f5f0ec"
-    }
+  "accountAssociation": {
+    "header": "eyJmaWQiOjM3NTM0MCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDRhMDNkMUMwZDYyNjljMmIxQzc4QzQ4MkU2OTY5MzgzNzQxZDAxM2YifQ",
+    "payload": "eyJkb21haW4iOiJvbmNoYWluLWhhbmdtYW4udmVyY2VsLmFwcCJ9",
+    "signature": "MHgwYjg5ZDAxOTIxMjdiYzQ4Nzc2ZTQzYjJkNjVjYWE4NzliMDNmYzkxODRlNWMxNjk4Zjk1ZjM0ZWUyOTM0MDM4NDZjMjhiMjI4ZTQyMGNjZDVhNjkxMzMwMWM3YWU0MzNmMzE5MWIzOWZlZjJkMWE0MTMxMjJmMGZlMmJhZmVkNTFj"
+  },
+  "frame": {
+    "version": "1",
+    "name": "Onchain Hangman",
+    "iconUrl": "https://onchain-hangman.vercel.app/logo.png",
+    "homeUrl": "https://onchain-hangman.vercel.app/",
+    "imageUrl": "https://onchain-hangman.vercel.app/onchain-hangman.png",
+    "buttonTitle": "Play",
+    "splashImageUrl": "https://onchain-hangman.vercel.app/onchain-hangman.png",
+    "splashBackgroundColor": "#f5f0ec"
   }
+}
