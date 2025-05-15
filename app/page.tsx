@@ -18,7 +18,7 @@ import {
   WalletDropdown,
   WalletDropdownDisconnect,
 } from "@coinbase/onchainkit/wallet";
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { Button as UIDemoButton } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
 import HangmanGame from "../components/HangmanGame";
@@ -72,6 +72,7 @@ export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
   const [frameAdded, setFrameAdded] = useState(false);
   const openUrl = useOpenUrl();
+  const mainContentRef = useRef<HTMLDivElement>(null);
 
   const [gamePhase, setGamePhase] = useState<'intro' | 'playing'>('intro');
   const [totalSessionScore, setTotalSessionScore] = useState<number>(0);
@@ -88,6 +89,22 @@ export default function App() {
       setFrameReady();
     }
   }, [setFrameReady, isFrameReady]);
+
+  useEffect(() => {
+    const adjustHeight = () => {
+      if (mainContentRef.current) {
+        mainContentRef.current.style.minHeight = `${window.innerHeight}px`;
+      }
+    };
+    adjustHeight();
+    window.addEventListener('resize', adjustHeight);
+    window.addEventListener('orientationchange', adjustHeight);
+
+    return () => {
+      window.removeEventListener('resize', adjustHeight);
+      window.removeEventListener('orientationchange', adjustHeight);
+    };
+  }, []);
 
   const addFrame = useAddFrame();
   const handleAddFrame = useCallback(async () => {
@@ -188,9 +205,9 @@ export default function App() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen font-sans text-[var(--app-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)]">
+    <div ref={mainContentRef} className="flex flex-col font-sans text-[var(--app-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)]">
       <div className="w-full max-w-screen-md mx-auto px-4 py-3 flex flex-col flex-grow">
-        <header className="flex justify-between items-center mb-3 h-11">
+        <header className="flex justify-between items-center mb-3 h-11 flex-shrink-0">
           <div className="flex items-center space-x-2">
             <Wallet className="z-10">
                 <ConnectWallet><Name className="text-inherit" /></ConnectWallet>
@@ -219,7 +236,7 @@ export default function App() {
           </div>
         </header>
 
-        <main className="flex-1 flex flex-col items-center justify-center">
+        <main className="flex-1 flex flex-col items-center justify-center flex-grow">
           {gamePhase === 'intro' ? (
             <IntroPageComponent onStartChallenge={startGame} />
           ) : challengeOutcome === 'allRoundsWon' ? (
@@ -287,7 +304,7 @@ export default function App() {
           )}
         </main>
 
-        <footer className="mt-auto pt-4 flex justify-center">
+        <footer className="mt-auto pt-4 flex justify-center flex-shrink-0">
           <UIDemoButton
             variant="ghost"
             size="sm"
