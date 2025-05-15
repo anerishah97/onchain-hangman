@@ -93,7 +93,6 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
     const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
     const [incorrectGuesses, setIncorrectGuesses] = useState<number>(0);
     const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
-    const [inputValue, setInputValue] = useState<string>('');
     const [roundScore, setRoundScore] = useState<number>(0); // Score for this specific round
     const [wordHintRevealed, setWordHintRevealed] = useState<boolean>(false);
     const [wordHintMessage, setWordHintMessage] = useState<string>('');
@@ -116,7 +115,6 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
         
         setIncorrectGuesses(0);
         setGameStatus('playing');
-        setInputValue('');
         setRoundScore(0);
         setWordHintRevealed(false);
         setWordHintMessage('');
@@ -168,13 +166,11 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
 
         if (!lowerLetter.match(/[a-z]/i) || lowerLetter.length !== 1) {
             setFeedbackMessage("Invalid input. Please enter a single letter.");
-            setInputValue('');
             return;
         }
 
         if (guessedLetters.includes(lowerLetter)) {
             setFeedbackMessage(`You already guessed '${lowerLetter}'. Try another letter.`);
-            setInputValue('');
             return;
         }
         
@@ -183,7 +179,6 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
 
         const newGuessedLetters = [...guessedLetters, lowerLetter];
         setGuessedLetters(newGuessedLetters);
-        setInputValue('');
 
         if (wordToGuess.includes(lowerLetter)) {
             if (checkWin(wordToGuess, newGuessedLetters)) {
@@ -200,18 +195,7 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
         }
     }, [gameStatus, guessedLetters, wordToGuess, wordHintMessage, wordHintRevealed]);
     
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value.toLowerCase());
-        setFeedbackMessage(''); // Clear feedback when user types
-    };
 
-    const handleInputSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (inputValue) {
-            handleGuess(inputValue);
-        }
-    };
-    
     const displayWord = getDisplayWord(wordToGuess, guessedLetters);
 
     let hintButtonTitle = "Reveal a descriptive hint for the word (Free).";
@@ -241,7 +225,7 @@ const HangmanGame: React.FC<HangmanGameProps> = ({
 
             {/* Display Word Hint Message */}
             {wordHintMessage && (
-                 <div className={`my-3 text-sm text-center ${wordHintRevealed ? 'text-blue-300' : 'text-[var(--ock-text-error)]'}`}>
+                 <div className={`my-3 text-sm text-center ${wordHintRevealed ? 'text-pink-400' : 'text-[var(--ock-text-error)]'}`}>
                     <p>{wordHintMessage}</p>
                 </div>
             )}
