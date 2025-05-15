@@ -18,7 +18,7 @@ export const onchainTerms: { word: string, hint: string, difficulty: 'easy' | 'm
     { word: "halving", hint: "Event that reduces the reward for mining new blocks by half.", difficulty: 'medium' },
     { word: "hashrate", hint: "The total computational power used for mining.", difficulty: 'hard' },
     { word: "mainnet", hint: "The primary, live blockchain network.", difficulty: 'easy' },
-    { word: "testnet", hint: "A blockchain network for experimentation and testing.", difficulty: 'easy' },
+    { word: "testnet", hint: "A blockchain network for experimentation and testing", difficulty: 'easy' },
     { word: "altcoin", hint: "Any cryptocurrency other than Bitcoin.", difficulty: 'easy' },
     { word: "airdrop", hint: "Distributing free tokens to wallet addresses.", difficulty: 'medium' },
     { word: "staking", hint: "Locking up crypto to support a network and earn rewards.", difficulty: 'medium' },
